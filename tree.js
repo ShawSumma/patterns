@@ -16,9 +16,19 @@ export const Tree = class {
         return n;
     }
 
+    forEach(k) {
+        if (this.color != null) {
+            k(this.color, this.low, this.high);
+        } else if (this.children != null) {
+            for (const c of this.children) {
+                c.forEach(k);
+            }
+        }
+    }
+
     areaOf(color) {
         if (this.children == null) {
-            if (this.color == color) {
+            if (this.color === color) {
                 return (this.high[0] - this.low[0]) * (this.high[1] - this.low[1]);
             } else {
                 return 0;
@@ -40,8 +50,8 @@ export const Tree = class {
             return;
         }
         if (
-            this.low[0] == this.high[0] - 1
-            && this.low[1] == this.high[1] - 1
+            this.low[0] === this.high[0] - 1
+            && this.low[1] === this.high[1] - 1
         ) {
             this.color = color;
         } else if (
@@ -61,7 +71,8 @@ export const Tree = class {
                 );
                 found.push(c.color);
             }
-            if (found.indexOf(found[0]) == 3) {
+            found.sort();
+            if (found[0] != null && found.lastIndexOf(found[0]) == 3) {
                 this.color = found[0];
                 delete this.children;
             }
